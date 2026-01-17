@@ -22,4 +22,4 @@ func inputData() (text string) {
 	return text
 }
 
-func calculateCurrency(num, curr1, curr2 float64) {}
+func calculateCurrency(num float64, curr1, curr2 string) {}
