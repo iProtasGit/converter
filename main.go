@@ -8,7 +8,8 @@ func main() {
 	const (
 		UsdToEur = 2
 		UsdToRub = 2
+		EurToRub = UsdToRub / UsdToEur
 	)
 
-	fmt.Println("Euro to Rub", UsdToEur/UsdToRub)
+	fmt.Println("Euro to Ruble", EurToRub)
 }
