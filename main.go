@@ -10,6 +10,16 @@ func main() {
 		UsdToRub = 2
 		EurToRub = UsdToRub / UsdToEur
 	)
-
-	fmt.Println("Euro to Ruble", EurToRub)
+	text := inputData()
+	fmt.Println(text, EurToRub)
 }
+
+func inputData() (text string) {
+	_, err := fmt.Scan(&text)
+	if err != nil {
+		panic(err)
+	}
+	return text
+}
+
+func calculateCurrency(num, curr1, curr2 float64) {}
