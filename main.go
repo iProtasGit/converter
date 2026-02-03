@@ -94,20 +94,20 @@ func inputMainCurrency(starterCurrency string) (mainCurrency string) {
 }
 
 func calculateCurrency(amount float64, starterCurr, mainCurr string) (float64, error) {
-	const (
-		UsdToEur = 2
-		UsdToRub = 2
-		EurToRub = 1
-	)
+	rate := map[string]float64{
+		"EurToRub": 3.0,
+		"UsdToRub": 5.0,
+		"UsdToEur": 1.6,
+	}
 
 	if (starterCurr == "EUR" && mainCurr == "USD") || (starterCurr == "USD" && mainCurr == "EUR") {
-		return amount * UsdToEur, nil
+		return amount * rate["UsdToEur"], nil
 	}
 	if (starterCurr == "USD" && mainCurr == "RUB") || (starterCurr == "RUB" && mainCurr == "USD") {
-		return amount * UsdToRub, nil
+		return amount * rate["UsdToRub"], nil
 	}
 	if (starterCurr == "RUB" && mainCurr == "EUR") || (starterCurr == "EUR" && mainCurr == "RUB") {
-		return amount * EurToRub, nil
+		return amount * rate["EurToRub"], nil
 	}
 	return 0, errors.New("something went wrong. please contact the tech support team")
 }
