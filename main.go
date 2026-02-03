@@ -108,5 +108,5 @@ func calculateCurrency(amount float64, starterCurr, mainCurr string) (float64, e
 		},
 	}
 
-	return rate[starterCurr][mainCurr], nil
+	return amount * rate[starterCurr][mainCurr], nil
 }
