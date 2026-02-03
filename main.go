@@ -93,16 +93,20 @@ func inputMainCurrency(starterCurrency string) (mainCurrency string) {
 }
 
 func calculateCurrency(amount float64, starterCurr, mainCurr string) (float64, error) {
-	rate := map[string]float64{
-		"EurToRub": 3.0,
-		"UsdToRub": 5.0,
-		"UsdToEur": 1.6,
+	rate := map[string]map[string]float64{
+		"EUR": {
+			"USD": 1.6,
+			"RUB": 3.0,
+		},
+		"RUB": {
+			"USD": 6.0,
+			"EUR": 3.0,
+		},
+		"USD": {
+			"EUR": 1.6,
+			"RUB": 6.0,
+		},
 	}
 
-	currency := fmt.Sprintf("%sTo%s", starterCurr, mainCurr)
-	if _, ok := rate[currency]; !ok {
-		currency = fmt.Sprintf("%sTo%s", mainCurr, starterCurr)
-	}
-
-	return rate[currency], nil
+	return rate[starterCurr][mainCurr], nil
 }
