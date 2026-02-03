@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -100,14 +99,10 @@ func calculateCurrency(amount float64, starterCurr, mainCurr string) (float64, e
 		"UsdToEur": 1.6,
 	}
 
-	if (starterCurr == "EUR" && mainCurr == "USD") || (starterCurr == "USD" && mainCurr == "EUR") {
-		return amount * rate["UsdToEur"], nil
+	currency := fmt.Sprintf("%sTo%s", starterCurr, mainCurr)
+	if _, ok := rate[currency]; !ok {
+		currency = fmt.Sprintf("%sTo%s", mainCurr, starterCurr)
 	}
-	if (starterCurr == "USD" && mainCurr == "RUB") || (starterCurr == "RUB" && mainCurr == "USD") {
-		return amount * rate["UsdToRub"], nil
-	}
-	if (starterCurr == "RUB" && mainCurr == "EUR") || (starterCurr == "EUR" && mainCurr == "RUB") {
-		return amount * rate["EurToRub"], nil
-	}
-	return 0, errors.New("something went wrong. please contact the tech support team")
+
+	return rate[currency], nil
 }
