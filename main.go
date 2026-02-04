@@ -4,6 +4,22 @@ import (
 	"fmt"
 )
 
+// Глобальная map с курсами валют (оптимизация - создается один раз)
+var currencyRates = map[string]map[string]float64{
+	"EUR": {
+		"USD": 1.6,
+		"RUB": 3.0,
+	},
+	"RUB": {
+		"USD": 6.0,
+		"EUR": 3.0,
+	},
+	"USD": {
+		"EUR": 1.6,
+		"RUB": 6.0,
+	},
+}
+
 func main() {
 	for {
 		fmt.Print("Welcome to the iProtas change! \nFastest and privacy currencies converter on the Golang🩵\n\n")
@@ -11,7 +27,9 @@ func main() {
 		amount := inputAmount()
 		mainCurrency := inputMainCurrency(starterCurrency)
 		fmt.Println(amount, starterCurrency, mainCurrency)
-		result, err := calculateCurrency(amount, starterCurrency, mainCurrency)
+
+		// Передаем указатель на глобальную map
+		result, err := calculateCurrency(amount, starterCurrency, mainCurrency, &currencyRates)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -26,7 +44,6 @@ func main() {
 		if choice == "exit" {
 			break
 		}
-
 	}
 }
 
@@ -43,7 +60,6 @@ func inputStarterCur() (currency string) {
 			break
 		}
 	}
-
 	return currency
 }
 
@@ -58,7 +74,6 @@ func inputAmount() (amount float64) {
 			break
 		}
 	}
-
 	return amount
 }
 
@@ -88,25 +103,9 @@ func inputMainCurrency(starterCurrency string) (mainCurrency string) {
 			break
 		}
 	}
-
 	return mainCurrency
 }
 
-func calculateCurrency(amount float64, starterCurr, mainCurr string) (float64, error) {
-	rate := map[string]map[string]float64{
-		"EUR": {
-			"USD": 1.6,
-			"RUB": 3.0,
-		},
-		"RUB": {
-			"USD": 6.0,
-			"EUR": 3.0,
-		},
-		"USD": {
-			"EUR": 1.6,
-			"RUB": 6.0,
-		},
-	}
-
-	return amount * rate[starterCurr][mainCurr], nil
+func calculateCurrency(amount float64, starterCurr, mainCurr string, rates *map[string]map[string]float64) (float64, error) {
+	return amount * (*rates)[starterCurr][mainCurr], nil
 }
